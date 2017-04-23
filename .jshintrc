@@ -1,0 +1,5 @@
+{
+	"globalstrict": true,
+	"esnext": true,
+	"laxbreak": true,
+}

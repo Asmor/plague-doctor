@@ -1,0 +1,13 @@
+{
+	"standard": [
+		{ "name": "Crow",    "plural": "Crowz",    "weight": 2, "points": 3, "softLimit": 5 },
+		{ "name": "Walker",  "plural": "Walkers",  "weight": 3, "points": 4, "softLimit": 8 },
+		{ "name": "Runner",  "plural": "Runners",  "weight": 1, "points": 9, "softLimit": 5 },
+		{ "name": "Fatty",   "plural": "Fatties",  "weight": 1, "points": 9, "softLimit": 5 },
+		{ "name": "Deadeye", "plural": "Deadeyes", "weight": 1, "points": 9, "softLimit": 5 },
+		{ "name": "Wolf",    "plural": "Wolves",   "weight": 1, "points": 9, "softLimit": 5 }
+	],
+	"abominations": [
+		{ "name": "Abomination" }
+	]
+}
