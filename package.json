@@ -1,8 +1,8 @@
 {
-	"name": "zombicide-black-plague",
-	"description": "A Vue.js project",
+	"name": "Plague Doctor",
+	"description": "Zombie spawner for Zombicide: Black Plague",
 	"version": "1.0.0",
-	"author": "asmor <itoltz@gmail.com>",
+	"author": "Asmor <itoltz@gmail.com>",
 	"private": true,
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
