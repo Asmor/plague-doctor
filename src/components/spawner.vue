@@ -140,6 +140,10 @@ export default {
 						>
 					</div>
 				</div>
+
+				<a class="spawner--feedback" href="https://boardgamegeek.com/blogpost/64767/">
+					Feedback &amp; Updates
+				</a>
 			</div>
 		</div>
 		<div class="spawner--results">
@@ -336,6 +340,23 @@ export default {
 		
 		&.spawner--button__red {
 			@include spawner-button($red);
+		}
+	}
+
+	.spawner--feedback {
+		display: block;
+		width: 200px;
+		background-color: #ddd;
+		color: #000;
+		padding: 10px;
+		text-align: center;
+		border-radius: 10px;
+		margin: 30px auto 0;
+		text-decoration: none;
+		font-weight: bold;
+
+		&:hover {
+			background-color: #ccc;
 		}
 	}
 }
