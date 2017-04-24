@@ -3,7 +3,11 @@
 import EventBus from "../event-bus.js";
 import { exploding, Table } from "../util.js";
 import outcomes from "../data/outcomes.json";
-import { zombies, zombieTypesTable } from "./zombies.js";
+import {
+	abominationTypesTable,
+	zombies,
+	zombieTypesTable,
+} from "./zombies.js";
 
 var outcomesTable = new Table({ definition: outcomes });
 var doublesCount = 0;
@@ -50,7 +54,7 @@ function draw({ level, difficulty }) {
 	var outcome = outcomesTable.roll();
 
 	if ( outcome === "abomination" ) {
-		result = { special: "Abomination" };
+		result = { special: abominationTypesTable.roll().spawnText };
 	}
 	else if ( outcome === "extraActivation" ) {
 		result = { special: "Extra Activation: " + zombieTypesTable.roll().plural };

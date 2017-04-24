@@ -8,6 +8,12 @@
 		{ "name": "Wolf",    "plural": "Wolves",   "weight": 1, "points": 15, "softLimit": 5, "sortOrder": 6 }
 	],
 	"abominations": [
-		{ "name": "Abomination" }
+		{ "name": "Abomination",    "default": true,  "weight": 6, "spawnText": "Abomination (standard)" },
+		{ "name": "Wolfbomination", "default": true,  "weight": 1, "spawnText": "Special Abomination: Wolfbomination" },
+		{ "name": "Abominotaur",    "default": true,  "weight": 1, "spawnText": "Special Abomination: Abominotaur" },
+		{ "name": "Ablobination",   "default": true,  "weight": 1, "spawnText": "Special Abomination: Ablobination" },
+		{ "name": "Abominatroll",   "default": true,  "weight": 1, "spawnText": "Special Abomination: Abominatroll" },
+		{ "name": "Abominalpha",    "default": false, "weight": 1, "spawnText": "Special Abomination: Abominalpha" },
+		{ "name": "Abominarat",     "default": false, "weight": 1, "spawnText": "Special Abomination: Abominarat" }
 	]
 }
