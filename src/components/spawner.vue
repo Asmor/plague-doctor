@@ -2,6 +2,8 @@
 "use strict";
 
 import { spawn } from "../model/spawner.js";
+import { abominations, zombies } from "../model/zombies.js";
+import { EventBus } from "../util.js";
 
 var resultNames = {
 	1: "Blue",
@@ -13,9 +15,24 @@ var resultNames = {
 export default {
 	data: function () {
 		return {
+			abominations,
 			difficulty: 1,
-			variety: true,
 			results: [],
+			optionsExpanded: false,
+			variety: true,
+			zombies,
+			enabled: {
+				abominations: Object.keys(abominations).reduce(function (acc, name) {
+					var definition = abominations[name];
+					acc[definition.name] = definition.default;
+					return acc;
+				}, {}),
+				zombies: Object.keys(zombies).reduce(function (acc, name) {
+					var definition = zombies[name];
+					acc[definition.name] = definition.default;
+					return acc;
+				}, {}),
+			},
 		}
 	},
 	methods: {
@@ -29,6 +46,24 @@ export default {
 				lines: spawnResult.lines,
 			});
 		},
+		zombieToggled: function ({ type, name }) {
+			var enabled = this.enabled.zombies;
+			var _default = "Walker";
+
+			if ( type === "abomination" ) {
+				enabled = this.enabled.abominations;
+				_default = "Abomination";
+			}
+
+			var value = enabled[name];
+
+			EventBus.$emit("toggle-zombie", { type, name, value });
+
+			if ( !Object.keys(enabled).some(key => enabled[key]) ) {
+				enabled[_default] = true;
+				this.zombieToggled({ type, name: _default });
+			}
+		}
 	},
 };
 </script>
@@ -55,11 +90,56 @@ export default {
 				>Red</button>
 			</div>
 
-			<div>
-				Spawn multiplier: <input v-model="difficulty" class="spawner--difficulty-input">
-			</div>
-			<div>
-				Extreme zombie variety: <input v-model="variety" type="checkbox">
+			<div
+				class="spawner--options-panel"
+				v-bind:class="{ 'spawner--options-panel__expanded': optionsExpanded }"
+			>
+				<div
+					class="spawner--option-header spawner--option-toggle"
+					@click="optionsExpanded = !optionsExpanded"
+				>Options</div>
+				<div class="spawner--option">
+					<div class="spawner--option-name">Spawn multiplier</div>
+					<div class="spawner--option-control">
+						<input v-model="difficulty" class="spawner--difficulty-input">
+					</div>
+				</div>
+				<div class="spawner--option">
+					<div class="spawner--option-name">Extreme zombie variety</div>
+					<div class="spawner--option-control">
+						<input v-model="variety" type="checkbox">
+					</div>
+				</div>
+
+				<div class="spawner--option-header">Zombies</div>
+				<div
+					class="spawner--option"
+					v-for="(definition, name) in zombies"
+				>
+					<div class="spawner--option-name">{{ definition.plural }}</div>
+					<div class="spawner--option-control">
+						<input
+							v-model="enabled.zombies[name]"
+							type="checkbox"
+							@change="zombieToggled({ type: 'zombie', name })"
+						>
+					</div>
+				</div>
+
+				<div class="spawner--option-header">Abominations</div>
+				<div
+					class="spawner--option"
+					v-for="(definition, name) in abominations"
+				>
+					<div class="spawner--option-name">{{ name }}</div>
+					<div class="spawner--option-control">
+						<input
+							v-model="enabled.abominations[name]"
+							type="checkbox"
+							@change="zombieToggled({ type: 'abomination', name })"
+						>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="spawner--results">
@@ -77,6 +157,7 @@ export default {
 					}"
 				>
 					<span class="spawner--result-header-info">Level: {{ result.level }}</span><!--
+						need to control spacing so comma is immediately after level
 					--><span v-if="result.difficulty !== 1">,
 						<span class="spawner--result-header-info">Multiplier: {{ result.difficulty }}</span>
 					</span>
@@ -106,12 +187,20 @@ export default {
 	$yellow: rgba(#ff5, 0.6);
 	$orange: rgba(#f90, 0.6);
 	$red: rgba(#f00, 0.6);
+	$break-width: 640px;
+	$option-toggle-height: 40px;
 
 	display: flex;
 	font-family: Arial;
 
-	@media ( max-width: 640px ) {
+	@media ( max-width: $break-width ) {
 		display: block;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: $option-toggle-height;
+		overflow: auto;
 	}
 
 	.spawner--difficulty-input {
@@ -121,7 +210,59 @@ export default {
 
 	.spawner--controls {
 		padding: 10px;
-		min-width: 285px;
+		width: 285px;
+
+		@media ( max-width: $break-width ) {
+			margin: auto;
+		}
+	}
+
+	.spawner--options-panel {
+		background: url("../assets/skullbg-red.gif");
+		border-radius: 10px;
+		padding: 10px;
+		color: white;
+
+		@media ( max-width: $break-width ) {
+			transition: height 1s;
+			position: fixed;
+
+			height: $option-toggle-height;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			border-radius: 10px 10px 0 0;
+
+			.spawner--option-toggle {
+				cursor: pointer;
+			}
+
+			&.spawner--options-panel__expanded {
+				height: 95%;
+				overflow: auto;
+			}
+		}
+	}
+
+	.spawner--option-header {
+		font-size: 1.2em;
+		text-align: center;
+		padding-bottom: 10px;
+	}
+
+	.spawner--option {
+		display: flex;
+		max-width: 300px;
+		margin-left: auto;
+		margin-right: auto;
+
+		&:not(:last-child) {
+			margin-bottom: 10px;
+		}
+	}
+
+	.spawner--option-name {
+		flex: 1;
 	}
 
 	.spawner--results {

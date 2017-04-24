@@ -1,6 +1,5 @@
 "use strict";
 
-import EventBus from "../event-bus.js";
 import { exploding, Table } from "../util.js";
 import outcomes from "../data/outcomes.json";
 import {

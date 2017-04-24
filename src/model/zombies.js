@@ -1,7 +1,7 @@
 "use strict";
 
 import zombieDefinition from "../data/zombies.json";
-import { Table } from "../util.js";
+import { EventBus, Table } from "../util.js";
 
 var abominations = {};
 var abominationWeights = {};
@@ -15,7 +15,6 @@ zombieDefinition.standard.forEach(function (definition) {
 });
 
 zombieDefinition.abominations
-.filter(def => def.default)
 .forEach(function (definition) {
 	var name = definition.name;
 	abominationWeights[name] = definition;
@@ -24,6 +23,15 @@ zombieDefinition.abominations
 
 var zombieTypesTable = new Table({ definition: zombieWeights });
 var abominationTypesTable = new Table({ definition: abominations });
+
+EventBus.$on("toggle-zombie", function ({ type, name, value }) {
+	var table = zombieTypesTable;
+	if ( type === "abomination" ) {
+		table = abominationTypesTable;
+	}
+
+	table.toggle({ name, enabled: value });
+});
 
 export {
 	abominations,
