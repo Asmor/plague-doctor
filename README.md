@@ -1,6 +1,6 @@
-# zombicide-black-plague
+# Plague Doctor
 
-> A Vue.js project
+> Zombie spawner for Zombicide: Black Plague
 
 ## Build Setup
 
