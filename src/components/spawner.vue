@@ -19,7 +19,7 @@ export default {
 			difficulty: 1,
 			results: [],
 			optionsExpanded: false,
-			variety: true,
+			variety: false,
 			zombies,
 			enabled: {
 				abominations: Object.keys(abominations).reduce(function (acc, name) {
