@@ -10,17 +10,19 @@ var doublesCount = 0;
 
 function spawn({ level, difficulty, variety }) {
 	var draws = [];
+	var doubled = false;
 
 	// Each spawn can cause at most two draws, if we have any doubles banked.
 	if ( doublesCount ) {
 		doublesCount--;
 		draws.push(draw({ level, difficulty }));
+		doubled = true;
 	}
 
 	draws.push(draw({ level, difficulty }));
 
 	var spawnPoints = 0;
-	var results = [];
+	var lines = [];
 
 	// In case we had doubles and got spawn points for both, go through the results and tally them
 	draws.forEach(function (draw) {
@@ -29,15 +31,18 @@ function spawn({ level, difficulty, variety }) {
 		}
 
 		if ( draw.special ) {
-			results.push(draw.special);
+			lines.push(draw.special);
 		}
 	});
 
 	if ( spawnPoints ) {
-		results = results.concat(spendSpawnPoints({ spawnPoints, variety }));
+		lines = lines.concat(spendSpawnPoints({ spawnPoints, variety }));
 	}
 
-	return results;
+	return {
+		doubled,
+		lines,
+	};
 }
 
 function draw({ level, difficulty }) {
@@ -96,7 +101,11 @@ function spendSpawnPoints({ spawnPoints, variety }) {
 		spawnPoints -= type.points;
 	} while ( spawnPoints > 0 );
 
-	return Object.keys(totals).map(function (name) {
+	return Object.keys(totals)
+	.sort(function (a, b) {
+		return zombies[a].sortOrder - zombies[b].sortOrder;
+	})
+	.map(function (name) {
 		var definition = zombies[name];
 		var qty = totals[name];
 

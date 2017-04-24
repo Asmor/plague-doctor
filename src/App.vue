@@ -21,4 +21,14 @@ export default {
 </template>
 
 <style>
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: url("./assets/skullbg-green.gif");
+	color: white;
+}
 </style>
