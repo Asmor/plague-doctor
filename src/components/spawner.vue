@@ -320,6 +320,12 @@ export default {
 		padding-bottom: 30px;
 	}
 
+	.spawner--result-line {
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
+	}
+
 	.spawner--buttons {
 		display: flex;
 		padding-bottom: 20px;
