@@ -40,10 +40,11 @@ export default {
 			var difficulty = Number.parseFloat(this.difficulty) || 1;
 			var spawnResult = spawn({ level: level, difficulty, variety: this.variety });
 			this.results.unshift({
+				title: spawnResult.title,
 				level: resultNames[level],
 				difficulty,
-				doubled: spawnResult.doubled,
 				lines: spawnResult.lines,
+				zombies: spawnResult.zombies,
 			});
 		},
 		zombieToggled: function ({ type, name }) {
@@ -160,17 +161,26 @@ export default {
 						'spawner--result-header__red': result.level === 'Red',
 					}"
 				>
-					<span class="spawner--result-header-info">Level: {{ result.level }}</span><!--
-						need to control spacing so comma is immediately after level
-					--><span v-if="result.difficulty !== 1">,
-						<span class="spawner--result-header-info">Multiplier: {{ result.difficulty }}</span>
-					</span>
-					<span
-						v-if="result.doubled"
-						class="spawner--result-header-info"
-					>(doubled)</span>
+					({{ result.level }}<span v-if="result.difficulty !== 1">x{{ result.difficulty }}</span>)
+					{{ result.title }}
 				</div>
-				<div v-for="line in result.lines">{{ line }}</div>
+
+				<div
+					v-for="line in result.lines"
+					class="spawner--result-line"
+				>{{ line }}</div>
+
+				<div
+					v-if="result.zombies"
+					class="spawner--zombies"
+				>
+					Spawn the following zombies:
+					<ul class="spawner--zombie-list">
+						<li v-for="zombie in result.zombies">
+							{{ zombie }}
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -219,6 +229,10 @@ export default {
 		@media ( max-width: $break-width ) {
 			margin: auto;
 		}
+	}
+
+	.spawner--zombie-list {
+		margin-left: 20px;
 	}
 
 	.spawner--options-panel {
@@ -300,10 +314,6 @@ export default {
 			background-color: $red;
 		}
 
-	}
-
-	.spawner--result-header-info {
-		display: inline-block;
 	}
 
 	.spawner--result {

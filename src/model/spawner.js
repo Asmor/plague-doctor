@@ -10,6 +10,7 @@ import {
 
 var outcomesTable = new Table({ definition: outcomes });
 var doublesCount = 0;
+var invasionTitle = "Zombie Invasion!";
 
 function spawn({ level, difficulty, variety }) {
 	var draws = [];
@@ -26,25 +27,36 @@ function spawn({ level, difficulty, variety }) {
 
 	var spawnPoints = 0;
 	var lines = [];
+	var titleParts = [];
+	var invasions = 0;
 
 	// In case we had doubles and got spawn points for both, go through the results and tally them
 	draws.forEach(function (draw) {
-		if ( draw.spawnPoints ) {
+		titleParts.push(draw.title);
+		if ( draw.type === "SPAWN" ) {
 			spawnPoints += draw.spawnPoints;
-		}
 
-		if ( draw.special ) {
-			lines.push(draw.special);
+			invasions++;
+		} else if ( draw.type === "SPECIAL" ) {
+			lines.push(draw.text);
 		}
 	});
 
+	if ( invasions >= 2 ) {
+		titleParts = titleParts.filter(title => title !== invasionTitle);
+		titleParts.push("Double Zombie Invasion!");
+	}
+
+	var zombies;
+
 	if ( spawnPoints ) {
-		lines = lines.concat(spendSpawnPoints({ spawnPoints, variety }));
+		zombies = spendSpawnPoints({ spawnPoints, variety });
 	}
 
 	return {
-		doubled,
+		title: titleParts.join(" + "),
 		lines,
+		zombies,
 	};
 }
 
@@ -53,20 +65,42 @@ function draw({ level, difficulty }) {
 	var outcome = outcomesTable.roll();
 
 	if ( outcome === "abomination" ) {
-		result = { special: abominationTypesTable.roll().spawnText };
+		let abom = abominationTypesTable.roll();
+		result = {
+			type: "SPECIAL",
+			title: abom.name + "!",
+			text: "Spawn the " + abom.spawnText + ".",
+		};
 	}
 	else if ( outcome === "extraActivation" ) {
-		result = { special: "Extra Activation: " + zombieTypesTable.roll().plural };
+		let zombie = zombieTypesTable.roll();
+		result = {
+			type: "SPECIAL",
+			title: "Extra Activation: " + zombie.plural + "!",
+			text: "All " + zombie.plural + " immediately gain an extra activation.",
+		};
 	}
 	else if ( outcome === "necromancer" ) {
-		result = { special: "Necromancer" };
+		result = {
+			type: "SPECIAL",
+			title: "Necromancer!",
+			text: "All Necromancers immediately gain an extra activation. Then spawn a necromancer.",
+		};
 	}
 	else if ( outcome === "double" ) {
 		doublesCount++;
-		result = { special: "Double Spawn" };
+		result = {
+			type: "SPECIAL",
+			title: "Double Spawn!",
+			text: "The next spawn will be doubled.",
+		};
 	}
 	else if ( outcome === "zombies" ) {
-		result = { spawnPoints: generatePoints({ difficulty, level }) };
+		result = {
+			type: "SPAWN",
+			title: invasionTitle,
+			spawnPoints: generatePoints({ difficulty, level }),
+		};
 	}
 
 	return result;
