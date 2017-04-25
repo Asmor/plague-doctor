@@ -5,6 +5,8 @@ import { spawn } from "../model/spawner.js";
 import { abominations, zombies } from "../model/zombies.js";
 import { EventBus } from "../util.js";
 
+import zombieImages from "./zombie-images.vue";
+
 var resultNames = {
 	1: "Blue",
 	2: "Yellow",
@@ -45,6 +47,7 @@ export default {
 				difficulty,
 				lines: spawnResult.lines,
 				zombies: spawnResult.zombies,
+				imageClasses: spawnResult.imageClasses,
 			});
 		},
 		zombieToggled: function ({ type, name }) {
@@ -66,6 +69,7 @@ export default {
 			}
 		}
 	},
+	components: { zombieImages },
 };
 </script>
 
@@ -165,21 +169,28 @@ export default {
 					{{ result.title }}
 				</div>
 
-				<div
-					v-for="line in result.lines"
-					class="spawner--result-line"
-				>{{ line }}</div>
+				<div class="spawner--result-text">
+					<div
+						v-for="line in result.lines"
+						class="spawner--result-line"
+					>{{ line }}</div>
 
-				<div
-					v-if="result.zombies"
-					class="spawner--zombies"
-				>
-					Spawn the following zombies:
-					<ul class="spawner--zombie-list">
-						<li v-for="zombie in result.zombies">
-							{{ zombie }}
-						</li>
-					</ul>
+					<div
+						v-if="result.zombies"
+						class="spawner--zombies"
+					>
+						Spawn the following zombies:
+						<ul class="spawner--zombie-list">
+							<li v-for="zombie in result.zombies">
+								{{ zombie }}
+							</li>
+						</ul>
+					</div>
+
+					<zombie-images
+						v-if="result.imageClasses.length"
+						:image-classes="result.imageClasses"
+					></zombie-images>
 				</div>
 			</div>
 		</div>
@@ -288,12 +299,18 @@ export default {
 		flex: 1;
 	}
 
+	.spawner--result {
+		padding-bottom: 30px;
+		position: relative;
+		margin-bottom: 20px;
+	}
+
+	$card-corner-radius: 10px;
 	.spawner--result-header {
 		font-weight: bold;
 		font-size: 1.2em;
 		padding: 10px;
-		margin-bottom: 10px;
-		border-radius: 5px;
+		border-radius: $card-corner-radius $card-corner-radius 0 0;
 		color: #000;
 
 		$opacity: 0.6;
@@ -316,8 +333,12 @@ export default {
 
 	}
 
-	.spawner--result {
-		padding-bottom: 30px;
+	.spawner--result-text {
+		padding: 10px;
+		min-height: 200px;
+		background-color: rgba(#982, 0.4);
+		border-radius: 0 0 $card-corner-radius $card-corner-radius;
+		position: relative;
 	}
 
 	.spawner--result-line {

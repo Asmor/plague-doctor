@@ -1,19 +1,19 @@
 {
 	"standard": [
-		{ "name": "Crow",    "plural": "Crowz",    "default": true, "weight": 2, "points": 3,  "softLimit": 5, "sortOrder": 1 },
-		{ "name": "Walker",  "plural": "Walkers",  "default": true, "weight": 3, "points": 4,  "softLimit": 8, "sortOrder": 2 },
-		{ "name": "Fatty",   "plural": "Fatties",  "default": true, "weight": 1, "points": 9,  "softLimit": 5, "sortOrder": 3 },
-		{ "name": "Runner",  "plural": "Runners",  "default": true, "weight": 1, "points": 9,  "softLimit": 5, "sortOrder": 4 },
-		{ "name": "Deadeye", "plural": "Deadeyes", "default": true, "weight": 1, "points": 10, "softLimit": 5, "sortOrder": 5 },
-		{ "name": "Wolf",    "plural": "Wolves",   "default": true, "weight": 1, "points": 15, "softLimit": 5, "sortOrder": 6 }
+		{ "name": "Crow",    "plural": "Crowz",    "default": true, "weight": 2, "points": 3,  "softLimit": 5, "sortOrder": 1, "imageClass": "zombie-images--image__crow" },
+		{ "name": "Walker",  "plural": "Walkers",  "default": true, "weight": 3, "points": 4,  "softLimit": 8, "sortOrder": 2, "imageClass": "zombie-images--image__walker" },
+		{ "name": "Fatty",   "plural": "Fatties",  "default": true, "weight": 1, "points": 9,  "softLimit": 5, "sortOrder": 3, "imageClass": "zombie-images--image__fatty" },
+		{ "name": "Runner",  "plural": "Runners",  "default": true, "weight": 1, "points": 9,  "softLimit": 5, "sortOrder": 4, "imageClass": "zombie-images--image__runner" },
+		{ "name": "Deadeye", "plural": "Deadeyes", "default": true, "weight": 1, "points": 10, "softLimit": 5, "sortOrder": 5, "imageClass": "zombie-images--image__deadeye" },
+		{ "name": "Wolf",    "plural": "Wolves",   "default": true, "weight": 1, "points": 15, "softLimit": 5, "sortOrder": 6, "imageClass": "zombie-images--image__wolf" }
 	],
 	"abominations": [
-		{ "name": "Abomination",    "default": true,  "weight": 6, "spawnText": "Abomination (standard)" },
-		{ "name": "Wolfbomination", "default": true,  "weight": 1, "spawnText": "Special Abomination: Wolfbomination" },
-		{ "name": "Abominotaur",    "default": true,  "weight": 1, "spawnText": "Special Abomination: Abominotaur" },
-		{ "name": "Ablobination",   "default": true,  "weight": 1, "spawnText": "Special Abomination: Ablobination" },
-		{ "name": "Abominatroll",   "default": true,  "weight": 1, "spawnText": "Special Abomination: Abominatroll" },
-		{ "name": "Abominalpha",    "default": false, "weight": 1, "spawnText": "Special Abomination: Abominalpha" },
-		{ "name": "Abominarat",     "default": false, "weight": 1, "spawnText": "Special Abomination: Abominarat" }
+		{ "name": "Abomination",    "default": true,  "weight": 6, "spawnText": "Abomination (standard)",              "imageClass": "zombie-images--image__abomination" },
+		{ "name": "Wolfbomination", "default": true,  "weight": 1, "spawnText": "Special Abomination: Wolfbomination", "imageClass": "zombie-images--image__wolfbomination" },
+		{ "name": "Abominotaur",    "default": true,  "weight": 1, "spawnText": "Special Abomination: Abominotaur",    "imageClass": "zombie-images--image__abominotaur" },
+		{ "name": "Ablobination",   "default": true,  "weight": 1, "spawnText": "Special Abomination: Ablobination",   "imageClass": "zombie-images--image__ablobination" },
+		{ "name": "Abominatroll",   "default": true,  "weight": 1, "spawnText": "Special Abomination: Abominatroll",   "imageClass": "zombie-images--image__abominatroll" },
+		{ "name": "Abominalpha",    "default": false, "weight": 1, "spawnText": "Special Abomination: Abominalpha",    "imageClass": "zombie-images--image__abominalpha" },
+		{ "name": "Abominarat",     "default": false, "weight": 1, "spawnText": "Special Abomination: Abominarat",     "imageClass": "zombie-images--image__abominarat" }
 	]
 }

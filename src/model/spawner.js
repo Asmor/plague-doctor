@@ -28,6 +28,7 @@ function spawn({ level, difficulty, variety }) {
 	var spawnPoints = 0;
 	var lines = [];
 	var titleParts = [];
+	var imageClasses = [];
 	var invasions = 0;
 
 	// In case we had doubles and got spawn points for both, go through the results and tally them
@@ -39,6 +40,10 @@ function spawn({ level, difficulty, variety }) {
 			invasions++;
 		} else if ( draw.type === "SPECIAL" ) {
 			lines.push(draw.text);
+
+			if ( draw.imageClass ) {
+				imageClasses.push(draw.imageClass);
+			}
 		}
 	});
 
@@ -47,16 +52,18 @@ function spawn({ level, difficulty, variety }) {
 		titleParts.push("Double Zombie Invasion!");
 	}
 
-	var zombies;
+	var spendResult;
 
 	if ( spawnPoints ) {
-		zombies = spendSpawnPoints({ spawnPoints, variety });
+		spendResult = spendSpawnPoints({ spawnPoints, variety });
+		imageClasses = imageClasses.concat(spendResult.imageClasses);
 	}
 
 	return {
 		title: titleParts.join(" + "),
 		lines,
-		zombies,
+		zombies: (spendResult || {}).zombies,
+		imageClasses,
 	};
 }
 
@@ -71,6 +78,10 @@ function draw({ level, difficulty }) {
 			title: abom.name + "!",
 			text: "Spawn the " + abom.spawnText + ".",
 		};
+
+		if ( abom.imageClass ) {
+			result.imageClass = abom.imageClass;
+		}
 	}
 	else if ( outcome === "extraActivation" ) {
 		let zombie = zombieTypesTable.roll();
@@ -79,12 +90,17 @@ function draw({ level, difficulty }) {
 			title: "Extra Activation: " + zombie.plural + "!",
 			text: "All " + zombie.plural + " immediately gain an extra activation.",
 		};
+
+		if ( zombie.imageClass ) {
+			result.imageClass = zombie.imageClass;
+		}
 	}
 	else if ( outcome === "necromancer" ) {
 		result = {
 			type: "SPECIAL",
 			title: "Necromancer!",
 			text: "All Necromancers immediately gain an extra activation. Then spawn a necromancer.",
+			imageClass: "zombie-images--image__necromancer",
 		};
 	}
 	else if ( outcome === "double" ) {
@@ -138,13 +154,20 @@ function spendSpawnPoints({ spawnPoints, variety }) {
 		spawnPoints -= type.points;
 	} while ( spawnPoints > 0 );
 
-	return Object.keys(totals)
+	var imageClasses = {};
+
+	var spawned = Object.keys(totals)
 	.sort(function (a, b) {
 		return zombies[a].sortOrder - zombies[b].sortOrder;
 	})
 	.map(function (name) {
 		var definition = zombies[name];
 		var qty = totals[name];
+		var imageClass = definition.imageClass;
+
+		if ( imageClass ) {
+			imageClasses[imageClass] = true;
+		}
 
 		if ( qty === 1 ) {
 			return "1x " + name;
@@ -152,6 +175,11 @@ function spendSpawnPoints({ spawnPoints, variety }) {
 			return qty + "x " + definition.plural;
 		}
 	});
+
+	return {
+		zombies: spawned,
+		imageClasses: Object.keys(imageClasses),
+	};
 }
 
 export {
