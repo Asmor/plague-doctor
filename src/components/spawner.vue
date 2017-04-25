@@ -49,6 +49,11 @@ export default {
 				zombies: spawnResult.zombies,
 				imageClasses: spawnResult.imageClasses,
 			});
+
+			// Limit the history to 20 entries, to keep browser from bogging down
+			if ( this.results.length > 20 ) {
+				this.results.pop();
+			}
 		},
 		zombieToggled: function ({ type, name }) {
 			var enabled = this.enabled.zombies;
