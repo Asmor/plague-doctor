@@ -170,7 +170,7 @@ export default {
 						'spawner--result-header__red': result.level === 'Red',
 					}"
 				>
-					({{ result.level }}<span v-if="result.difficulty !== 1">x{{ result.difficulty }}</span>)
+					({{ result.level }}<span v-if="result.difficulty !== 1"> x{{ result.difficulty }}</span>)
 					{{ result.title }}
 				</div>
 

@@ -8,40 +8,46 @@ export default {
 
 <template>
 	<div class="zombie-images">
-		<div
-			v-for="imageClass in imageClasses"
-			class="zombie-images--image"
-			:class="imageClass"
-		></div>
+		<div class="zombie-images--container">
+			<div
+				v-for="imageClass in imageClasses"
+				class="zombie-images--image"
+				:class="imageClass"
+			></div>
+		</div>
 	</div>
 </template>
 
 <style lang="scss">
-@mixin auto-dimension($height, $aspect-ratio) {
+@mixin auto-dimension($height, $aspect-ratio, $overlap: 0.5) {
 	$width: $height * $aspect-ratio;
 	height: 100%;
 	width: $width;
 	background-size: auto $height;
-	margin-left: $width * -0.5;
+	margin-left: $width * $overlap * -1;
 }
 
 .zombie-images {
-	// background-color: red;
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 200px; // Determines size of pictures
+	height: 200px;
 	overflow: hidden;
 	z-index: -1;
 	padding-right: 20px;
+
+	.zombie-images--container {
+		height: 100%;
+		float: right;
+	}
 
 	.zombie-images--image {
 		height: 100%;
 		flex: 1;
 		$abom-height: 200px;
 		$standard-height: 150px;
-		float: right;
+		float: left;
 
 		&.zombie-images--image__ablobination {
 			background: url("../assets/ablobination.png") no-repeat center bottom;
@@ -76,7 +82,7 @@ export default {
 		&.zombie-images--image__crow {
 			background: url("../assets/crow.png") no-repeat center top;
 			$aspect-ratio: 1.8607;
-			@include auto-dimension($standard-height * 2/3, $aspect-ratio);
+			@include auto-dimension($standard-height * 2/3, $aspect-ratio, 1);
 		}
 		&.zombie-images--image__deadeye {
 			background: url("../assets/deadeye.png") no-repeat center bottom;
