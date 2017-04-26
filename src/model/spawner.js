@@ -1,6 +1,6 @@
 "use strict";
 
-import { exploding, Table } from "../util.js";
+import { exploding, Table, shuffle } from "../util.js";
 import outcomes from "../data/outcomes.json";
 import {
 	abominationTypesTable,
@@ -63,7 +63,7 @@ function spawn({ level, difficulty, variety }) {
 		title: titleParts.join(" + "),
 		lines,
 		zombies: (spendResult || {}).zombies,
-		imageClasses,
+		imageClasses: shuffle(imageClasses),
 	};
 }
 
