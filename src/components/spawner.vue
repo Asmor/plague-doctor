@@ -266,6 +266,7 @@ export default {
 			left: 0;
 			right: 0;
 			border-radius: 10px 10px 0 0;
+			z-index: 10;
 
 			.spawner--option-toggle {
 				cursor: pointer;
